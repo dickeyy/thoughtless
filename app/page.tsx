@@ -1,119 +1,119 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import { flushSync } from 'react-dom'
+import * as React from "react";
+import { flushSync } from "react-dom";
 
 export default function Page() {
   // Generate a unique storage key for each day
   const storageKey = React.useMemo(() => {
-    const date = new Date()
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-  }, [])
+    const date = new Date();
+    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+  }, []);
 
-  const [text, setText] = React.useState('')
-  const textareaRef = React.useRef<HTMLTextAreaElement>(null)
-  const savingTimeout = React.useRef<NodeJS.Timeout | null>(null)
+  const [text, setText] = React.useState("");
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const savingTimeout = React.useRef<NodeJS.Timeout | null>(null);
 
   function forceFocus(e?: React.SyntheticEvent<HTMLTextAreaElement> | UIEvent | Event) {
     if (e) {
-      e.preventDefault()
+      e.preventDefault();
     }
 
-    const el = textareaRef.current
-    el.focus()
-    el.setSelectionRange(el.value.length, el.value.length)
-    el.scrollTop = el.scrollHeight
+    const el = textareaRef.current;
+    el.focus();
+    el.setSelectionRange(el.value.length, el.value.length);
+    el.scrollTop = el.scrollHeight;
   }
 
   React.useEffect(() => {
-    window.addEventListener('resize', forceFocus, { passive: true })
-    document.addEventListener('selectionchange', forceFocus)
+    window.addEventListener("resize", forceFocus, { passive: true });
+    document.addEventListener("selectionchange", forceFocus);
     return () => {
-      window.removeEventListener('resize', forceFocus)
-      document.removeEventListener('selectionchange', forceFocus)
-    }
-  }, [])
+      window.removeEventListener("resize", forceFocus);
+      document.removeEventListener("selectionchange", forceFocus);
+    };
+  }, []);
 
   React.useEffect(() => {
     try {
-      const savedText = localStorage.getItem(storageKey)
+      const savedText = localStorage.getItem(storageKey);
 
       if (savedText) {
-        setText(savedText)
-        forceFocus()
+        setText(savedText);
+        forceFocus();
       }
     } catch (e) {}
-  }, [])
+  }, []);
 
   React.useEffect(() => {
-    forceFocus()
-  }, [text])
+    forceFocus();
+  }, [text]);
 
   React.useEffect(() => {
     function handleKeydown(e: KeyboardEvent) {
       // Focus
-      if (e.key === 'Tab') {
-        e.preventDefault()
-        forceFocus()
-        return
+      if (e.key === "Tab") {
+        e.preventDefault();
+        forceFocus();
+        return;
       }
 
       // Blur
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        textareaRef.current?.blur()
-        return
+      if (e.key === "Escape") {
+        e.preventDefault();
+        textareaRef.current?.blur();
+        return;
       }
 
       // Save
-      if (e.key === 's' && e.metaKey) {
-        e.preventDefault()
-        save()
-        return
+      if (e.key === "s" && e.metaKey) {
+        e.preventDefault();
+        save();
+        return;
       }
 
       if (document.activeElement === textareaRef.current) {
-        return
+        return;
       }
 
       // Clear document content
-      if (e.key === 'Backspace' && e.metaKey) {
-        const confirmed = confirm("Are you sure you want to delete today's note?")
+      if (e.key === "Backspace" && e.metaKey) {
+        const confirmed = confirm("Are you sure you want to delete today's note?");
 
         if (confirmed) {
           flushSync(() => {
-            setText('')
-          })
+            setText("");
+          });
 
-          forceFocus()
+          forceFocus();
 
           try {
-            localStorage.removeItem(storageKey)
+            localStorage.removeItem(storageKey);
           } catch (e) {}
         }
 
-        return
+        return;
       }
 
       // Go into fullscreen
-      if (e.key === 'f') {
-        e.preventDefault()
-        document.documentElement.requestFullscreen()
-        forceFocus()
-        return
+      if (e.key === "f") {
+        e.preventDefault();
+        document.documentElement.requestFullscreen();
+        forceFocus();
+        return;
       }
     }
 
-    document.addEventListener('keydown', handleKeydown)
+    document.addEventListener("keydown", handleKeydown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeydown)
-    }
-  }, [])
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  }, []);
 
   function save() {
     try {
-      localStorage.setItem(storageKey, textareaRef.current.value)
+      localStorage.setItem(storageKey, textareaRef.current.value);
     } catch (e) {}
   }
 
@@ -121,14 +121,14 @@ export default function Page() {
     <main>
       <header>
         {new Date().toLocaleString(undefined, {
-          month: 'long',
-          day: 'numeric',
+          month: "long",
+          day: "numeric"
         })}
       </header>
       <section>
         <textarea
           ref={textareaRef}
-          value={'\n\n\n\n' + text}
+          value={"\n\n\n\n" + text}
           spellCheck={false}
           autoCapitalize="off"
           autoComplete="off"
@@ -138,16 +138,16 @@ export default function Page() {
           onPointerUp={forceFocus}
           onClick={forceFocus}
           onKeyDown={(e) => {
-            if (['Backspace', 'ArrowUp', 'ArrowLeft', 'Arrowright', 'ArrowDown'].includes(e.key)) {
-              e.preventDefault()
+            if (["ArrowUp", "ArrowLeft", "Arrowright", "ArrowDown"].includes(e.key)) {
+              e.preventDefault();
             }
           }}
           onChange={(e) => {
-            setText(e.currentTarget.value.slice(4))
+            setText(e.currentTarget.value.slice(4));
 
             // Debounce saving to localStorage
-            clearTimeout(savingTimeout.current)
-            savingTimeout.current = setTimeout(save, 500)
+            clearTimeout(savingTimeout.current);
+            savingTimeout.current = setTimeout(save, 500);
           }}
         />
 
@@ -159,5 +159,5 @@ export default function Page() {
         </div>
       </section>
     </main>
-  )
+  );
 }
