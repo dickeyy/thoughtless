@@ -1,9 +1,9 @@
 @font-face {
-  font-family: 'iA Writer Mono';
+  font-family: "iA Writer Mono";
   font-style: normal;
   font-weight: 100 900;
   font-display: block;
-  src: url('/fonts/iAWriterMonoV.woff2') format('woff2');
+  src: url("/fonts/iAWriterMonoV.woff2") format("woff2");
 }
 
 *,
@@ -17,7 +17,7 @@
   --bg: #1a1a1a;
   --fg: #cbcccc;
   --placeholder: #717171;
-  --font: 'iA Writer Mono', ui-monospace, monospace;
+  --font: "iA Writer Mono", ui-monospace, monospace;
   --font-size: clamp(16px, 2.5vw, 26px);
   --line-height: calc(var(--font-size) * 1.7);
 }
@@ -65,7 +65,7 @@ textarea {
   padding: 0;
   margin: 0;
 
-  caret-color: #00bfff;
+  caret-color: #fffff;
   line-height: 1.7;
   font-size: var(--font-size);
   font-family: var(--font);

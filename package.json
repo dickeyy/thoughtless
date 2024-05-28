@@ -1,7 +1,8 @@
 {
   "name": "thoughtless",
   "scripts": {
-    "build": "next build"
+    "build": "next build",
+    "dev": "next dev"
   },
   "dependencies": {
     "next": "^14.0.1",

@@ -9,4 +9,4 @@ My changes to their version are subtle but mainly I wanted to add the ability to
 backspace, I'm assuming to encourage raw thought dumping, however, it triggered my OCD not being able to fix typos, so I
 added it back in.
 
-You can try my version [Here](https://thoughtless.dickey.gg).
+You can try my version [Here](https://thoughtless.kyle.so).
